@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer Frame Girth / Microchip Chassis -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 35,30 h 38 a 5,5 0 0 1 5,5 v 38 a 5,5 0 0 1 -5,5 h -38 a 5,5 0 0 1 -5,-5 v -38 a 5,5 0 0 1 5,-5 z"
+        android:strokeWidth="2.5"
+        android:strokeColor="#00FFCC" />
+
+    <!-- Corner chamfers / aesthetics -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 35,30 L 30,35"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00E5A3" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 73,30 L 78,35"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00E5A3" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 35,78 L 30,73"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00E5A3" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 73,78 L 78,73"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00E5A3" />
+
+    <!-- Central Micro-processor Matrix -->
+    <path
+        android:fillColor="#00E5A3"
+        android:pathData="M 44,44 h 20 a 2,2 0 0 1 2,2 v 20 a 2,2 0 0 1 -2,2 h -20 a 2,2 0 0 1 -2,-2 v -20 a 2,2 0 0 1 2,-2 z" />
+
+    <path
+        android:fillColor="#00090F"
+        android:pathData="M 49,49 h 10 v 10 h -10 z" />
+
+    <!-- Connection circuits from chip to chassis -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 44,54 L 30,54 M 64,54 L 78,54 M 54,44 L 54,30 M 54,64 L 54,78"
+        android:strokeWidth="1.5"
+        android:strokeColor="#00FFCC" />
+
+    <!-- Pins extending outward -->
+    <!-- Top Pins -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 38,30 L 38,20"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 54,30 L 54,20"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 70,30 L 70,20"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+
+    <!-- Bottom Pins -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 38,78 L 38,88"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 54,78 L 54,88"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 70,78 L 70,88"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+
+    <!-- Left Pins -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 30,38 L 20,38"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 30,54 L 20,54"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 30,70 L 20,70"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+
+    <!-- Right Pins -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 78,38 L 88,38"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 78,54 L 88,54"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M 78,70 L 88,70"
+        android:strokeWidth="1.8"
+        android:strokeColor="#00FFCC" />
+
+    <!-- Cyber blocky data terminals -->
+    <!-- Top terminals -->
+    <path android:fillColor="#00FFCC" android:pathData="M36.5,14.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M52.5,14.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M68.5,14.5 h3 v3 h-3 z" />
+    
+    <!-- Bottom terminals -->
+    <path android:fillColor="#00FFCC" android:pathData="M36.5,90.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M52.5,90.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M68.5,90.5 h3 v3 h-3 z" />
+
+    <!-- Left terminals -->
+    <path android:fillColor="#00FFCC" android:pathData="M14.5,36.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M14.5,52.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M14.5,68.5 h3 v3 h-3 z" />
+
+    <!-- Right terminals -->
+    <path android:fillColor="#00FFCC" android:pathData="M90.5,36.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M90.5,52.5 h3 v3 h-3 z" />
+    <path android:fillColor="#00FFCC" android:pathData="M90.5,68.5 h3 v3 h-3 z" />
+</vector>
