@@ -30,8 +30,7 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
 
-    // Catch any uncaught thread exceptions to prevent application exit or silent crashes,
-    // and display a clean diagnostics overlay instead.
+    // Capture uncaught exceptions and direct them to our Diagnostic Screen
     val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
     Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
       Handler(Looper.getMainLooper()).post {

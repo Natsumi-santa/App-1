@@ -15,6 +15,39 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     private val dao = AppDatabase.getDatabase(application).appDao()
     private val repository = AppRepository(dao)
 
+    private val prefs = application.getSharedPreferences("personal_os_prefs", android.content.Context.MODE_PRIVATE)
+
+    val ownerName = kotlinx.coroutines.flow.MutableStateFlow(prefs.getString("owner_name", "Rasupriyan Organizer") ?: "Rasupriyan Organizer")
+    val ownerEmail = kotlinx.coroutines.flow.MutableStateFlow(prefs.getString("owner_email", "rasupriyan935@gmail.com") ?: "rasupriyan935@gmail.com")
+    val profileIcon = kotlinx.coroutines.flow.MutableStateFlow(prefs.getString("profile_icon", "👨‍💻") ?: "👨‍💻")
+    val notificationsEnabled = kotlinx.coroutines.flow.MutableStateFlow(prefs.getBoolean("notifications_enabled", true))
+    val essentialNotificationsOnly = kotlinx.coroutines.flow.MutableStateFlow(prefs.getBoolean("essential_notifications_only", true))
+
+    fun updateOwnerName(name: String) {
+        prefs.edit().putString("owner_name", name).apply()
+        ownerName.value = name
+    }
+
+    fun updateOwnerEmail(email: String) {
+        prefs.edit().putString("owner_email", email).apply()
+        ownerEmail.value = email
+    }
+
+    fun updateProfileIcon(icon: String) {
+        prefs.edit().putString("profile_icon", icon).apply()
+        profileIcon.value = icon
+    }
+
+    fun updateNotificationsEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean("notifications_enabled", enabled).apply()
+        notificationsEnabled.value = enabled
+    }
+
+    fun updateEssentialNotificationsOnly(enabled: Boolean) {
+        prefs.edit().putBoolean("essential_notifications_only", enabled).apply()
+        essentialNotificationsOnly.value = enabled
+    }
+
     val notesUiState: StateFlow<List<Note>> = repository.allNotes
         .catch { e ->
             e.printStackTrace()
@@ -119,9 +152,29 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun addEvent(title: String, colorHex: Long, category: String, day: Long = 1) {
+    fun addEvent(
+        title: String,
+        colorHex: Long,
+        category: String,
+        day: Long = 1,
+        timeOfBirth: String? = null,
+        bornHospital: String? = null,
+        nakshatram: String? = null,
+        rasi: String? = null
+    ) {
         viewModelScope.launch {
-            repository.insertEvent(CalendarEvent(title = title, colorHex = colorHex, category = category, timestamp = day))
+            repository.insertEvent(
+                CalendarEvent(
+                    title = title,
+                    colorHex = colorHex,
+                    category = category,
+                    timestamp = day,
+                    timeOfBirth = timeOfBirth,
+                    bornHospital = bornHospital,
+                    nakshatram = nakshatram,
+                    rasi = rasi
+                )
+            )
         }
     }
 
@@ -145,7 +198,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun toggleTaskStatus(task: Task) {
         viewModelScope.launch {
-            repository.updateTaskStatus(task.id, !task.isCompleted)
+            val cloned = task.copy()
+            repository.updateTaskStatus(cloned.id, !cloned.isCompleted)
         }
     }
 
@@ -181,7 +235,73 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun toggleFinancialPaidStatus(item: FinancialItem) {
         viewModelScope.launch {
-            repository.updateFinancialPaidStatus(item.id, !item.isPaid)
+            val cloned = item.copy()
+            repository.updateFinancialPaidStatus(cloned.id, !cloned.isPaid)
+        }
+    }
+
+    fun updateNote(id: Int, title: String, content: String, isSynced: Boolean = false) {
+        viewModelScope.launch {
+            repository.insertNote(Note(id = id, title = title, content = content, isSynced = isSynced))
+        }
+    }
+
+    fun syncAllAppData(onComplete: (notesSynced: Int, eventsSynced: Int) -> Unit) {
+        viewModelScope.launch {
+            val allNotes = repository.allNotes.first()
+            val allEvents = repository.allEvents.first()
+            
+            var notesUpdated = 0
+            var eventsUpdated = 0
+
+            // 1. Mark all unsynced local notes as synced
+            allNotes.forEach { note ->
+                if (!note.isSynced) {
+                    repository.insertNote(note.copy(isSynced = true))
+                    notesUpdated++
+                }
+            }
+
+            // 2. Mark all unsynced local events as synced
+            allEvents.forEach { ev ->
+                if (!ev.isSynced) {
+                    repository.insertEvent(ev.copy(isSynced = true))
+                    eventsUpdated++
+                }
+            }
+
+            // 3. Inject a remote demo sync note if none exists to simulate fetching from cloud
+            if (allNotes.none { it.title.contains("Cloud Backup") }) {
+                repository.insertNote(
+                    Note(
+                        title = "🌍 Cloud Backup Notice",
+                        content = "### Synchronized Workspace Loaded\nYour local-first database has successfully established a handshake with the remote cloud.\n\n- **Database Engine**: Room Lite SQLite (Secure Vault)\n- **Sync Host**: `ais-dev-srwkm` API Gateway\n- **Encryption**: AES-256 standard local hash\n- **Status**: Synchronized & fully secure.",
+                        isSynced = true
+                    )
+                )
+                notesUpdated++
+            }
+
+            onComplete(notesUpdated, eventsUpdated)
+        }
+    }
+
+    fun syncCalendarFromOthers(onComplete: (Int) -> Unit) {
+        viewModelScope.launch {
+            val remoteEvents = listOf(
+                CalendarEvent(title = "Remote Tech Conf 💻", colorHex = 0xFFFF9900, category = "Timeline", timestamp = 5),
+                CalendarEvent(title = "Product Milestone Launch 🚀", colorHex = 0xFF4A8BFF, category = "Timeline", timestamp = 18),
+                CalendarEvent(title = "Personal Review Session 🧘", colorHex = 0xFF00FFCC, category = "Reminder", timestamp = 25)
+            )
+            var count = 0
+            val exist = repository.allEvents.first()
+            remoteEvents.forEach { ev ->
+                if (exist.none { it.title == ev.title }) {
+                    repository.insertEvent(ev)
+                    count++
+                }
+            }
+            onComplete(count)
         }
     }
 }

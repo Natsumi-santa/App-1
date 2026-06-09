@@ -9,7 +9,8 @@ data class Note(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val content: String,
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val isSynced: Boolean = false
 )
 
 @Entity(tableName = "events")
@@ -18,7 +19,12 @@ data class CalendarEvent(
     val title: String,
     val colorHex: Long, // Use standard ARGB Long representation like Color.value
     val category: String, // Exams, Birthdays, Finances, Habits
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val timeOfBirth: String? = null,
+    val bornHospital: String? = null,
+    val nakshatram: String? = null,
+    val rasi: String? = null,
+    val isSynced: Boolean = false
 )
 
 @Entity(tableName = "tasks")
@@ -88,7 +94,7 @@ interface AppDao {
     suspend fun updateFinancialPaidStatus(id: Int, isPaid: Boolean)
 }
 
-@Database(entities = [Note::class, CalendarEvent::class, Task::class, FinancialItem::class], version = 4, exportSchema = false)
+@Database(entities = [Note::class, CalendarEvent::class, Task::class, FinancialItem::class], version = 6, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appDao(): AppDao
 
